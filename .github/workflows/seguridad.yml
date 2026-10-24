@@ -35,7 +35,7 @@ jobs:
       - uses: actions/checkout@v4
       # Sin las dependencias resueltas, Trivy solo ve las versiones escritas en pom.xml y no las transitivas
       # (Tomcat, Spring, Jackson): las CRITICAL de esas librerias quedaban fuera del informe y de la puerta.
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 17
@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: 17
