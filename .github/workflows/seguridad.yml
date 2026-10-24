@@ -33,6 +33,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Sin las dependencias resueltas, Trivy solo ve las versiones escritas en pom.xml y no las transitivas
+      # (Tomcat, Spring, Jackson): las CRITICAL de esas librerias quedaban fuera del informe y de la puerta.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+      - name: Resolver las dependencias de Maven (cache local para Trivy)
+        run: mvn -B -q -f api/pom.xml dependency:resolve
       - name: Informe (CRITICAL y HIGH, informativo)
         uses: aquasecurity/trivy-action@v0.36.0
         with:
@@ -41,6 +50,7 @@ jobs:
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           skip-dirs: web/node_modules
+          trivyignores: .trivyignore
           format: table
           exit-code: "0"
       - name: Puerta - ninguna vulnerabilidad CRITICAL con parche disponible
@@ -51,6 +61,7 @@ jobs:
           severity: CRITICAL
           ignore-unfixed: true
           skip-dirs: web/node_modules
+          trivyignores: .trivyignore
           format: table
           exit-code: "1"
       - uses: actions/setup-node@v4
