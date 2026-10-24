@@ -22,7 +22,7 @@ jobs:
 
   preview:
     name: Preview en Vercel
-    needs: [ci, seguridad]
+    needs: [ci]
     runs-on: ubuntu-latest
     environment: preview
     permissions:
