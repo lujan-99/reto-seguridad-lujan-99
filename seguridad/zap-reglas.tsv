@@ -10,3 +10,4 @@
 90022	FAIL	(Application Error Disclosure)
 40012	FAIL	(Cross Site Scripting Reflected)
 40018	FAIL	(SQL Injection)
+100001	FAIL	(Unexpected Content-Type was returned)
