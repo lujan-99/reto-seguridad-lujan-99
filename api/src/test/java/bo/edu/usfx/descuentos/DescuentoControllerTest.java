@@ -82,4 +82,13 @@ class DescuentoControllerTest {
                         .header("Access-Control-Request-Method", "POST"))
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    void corsNoDaCredencialesNiCabecerasArbitrariasAUnOrigenPermitido() throws Exception {
+        mvc.perform(options("/api/descuento")
+                        .header("Origin", "http://localhost:5173")
+                        .header("Access-Control-Request-Method", "POST")
+                        .header("Access-Control-Request-Headers", "X-Cualquier-Cosa"))
+                .andExpect(status().isForbidden());
+    }
 }
