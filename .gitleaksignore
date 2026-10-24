@@ -1,0 +1,5 @@
+# Huellas de secretos que estuvieron en el historial y ya fueron REVOCADOS (no se reescribe el historial publico).
+# Formato: commit:archivo:regla:linea. Cada linea lleva su justificacion.
+# R5 (2026-10-24): app.admin-token versionado en el commit inicial. Valor revocado y rotado: el nuevo vive solo
+# en la variable ADMIN_TOKEN del entorno y la API ya no lee el viejo. Responsable: David Lujan.
+87013fde37843baf4b16c27eb5e34b5bf4fddece:api/src/main/resources/application.properties:generic-api-key:26

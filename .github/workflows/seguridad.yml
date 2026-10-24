@@ -33,6 +33,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Sin las dependencias resueltas, Trivy solo ve las versiones escritas en pom.xml y no las transitivas
+      # (Tomcat, Spring, Jackson): las CRITICAL de esas librerias quedaban fuera del informe y de la puerta.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+      - name: Resolver las dependencias de Maven (cache local para Trivy)
+        run: mvn -B -q -f api/pom.xml dependency:resolve
       - name: Informe (CRITICAL y HIGH, informativo)
         uses: aquasecurity/trivy-action@v0.36.0
         with:
@@ -41,6 +50,7 @@ jobs:
           severity: CRITICAL,HIGH
           ignore-unfixed: true
           skip-dirs: web/node_modules
+          trivyignores: .trivyignore
           format: table
           exit-code: "0"
       - name: Puerta - ninguna vulnerabilidad CRITICAL con parche disponible
@@ -51,8 +61,9 @@ jobs:
           severity: CRITICAL
           ignore-unfixed: true
           skip-dirs: web/node_modules
+          trivyignores: .trivyignore
           format: table
-          exit-code: "0"
+          exit-code: "1"
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -97,7 +108,7 @@ jobs:
           codigo=$?
           echo "ZAP termino con codigo $codigo (0 = limpio, 1 = FAIL, 2 = solo avisos, 3 = error de ejecucion)"
           # 0 y 2 pasan: los avisos se triagean en el informe. 1 y 3 fallan el pipeline.
-          true
+          if [ "$codigo" -eq 1 ] || [ "$codigo" -ge 3 ]; then exit 1; fi
       - name: Guardar el informe de ZAP y el registro de la API
         if: always()
         uses: actions/upload-artifact@v4
