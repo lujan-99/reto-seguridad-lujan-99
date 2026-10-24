@@ -97,7 +97,7 @@ jobs:
           codigo=$?
           echo "ZAP termino con codigo $codigo (0 = limpio, 1 = FAIL, 2 = solo avisos, 3 = error de ejecucion)"
           # 0 y 2 pasan: los avisos se triagean en el informe. 1 y 3 fallan el pipeline.
-          true
+          if [ "$codigo" -eq 1 ] || [ "$codigo" -ge 3 ]; then exit 1; fi
       - name: Guardar el informe de ZAP y el registro de la API
         if: always()
         uses: actions/upload-artifact@v4
