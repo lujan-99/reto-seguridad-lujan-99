@@ -52,7 +52,7 @@ jobs:
           ignore-unfixed: true
           skip-dirs: web/node_modules
           format: table
-          exit-code: "0"
+          exit-code: "1"
       - uses: actions/setup-node@v4
         with:
           node-version: 22
