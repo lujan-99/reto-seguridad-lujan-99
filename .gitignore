@@ -1,0 +1,8 @@
+node_modules/
+.vercel/
+.idea/
+.vscode/
+*.log
+
+# Practica 10: informes de ZAP (se generan en CI, no se versionan)
+seguridad/zap-informe.*

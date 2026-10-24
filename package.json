@@ -1,0 +1,18 @@
+{
+  "name": "descuentos-app",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Practica 10 COM450: pruebas de seguridad con OWASP ZAP, Trivy y gitleaks sobre el pipeline de la Practica 8",
+  "scripts": {
+    "prepare": "husky",
+    "test:web": "npm --prefix web test",
+    "test:api": "mvn -B -f api/pom.xml test",
+    "test": "npm run test:web && npm run test:api"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0"
+  }
+}
